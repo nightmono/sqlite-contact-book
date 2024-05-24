@@ -29,8 +29,48 @@ def create_options_box() -> guizero.Box:
 
 def create_content_box() -> guizero.App:
     content_box = guizero.Box(app, align="top", height="fill", width="fill", border=True)
-    guizero.Box(content_box, border=True)
+    guizero.Box(content_box, width="fill")
     return content_box
+
+def display_contact(contact_id):
+    contact_id, first_name, last_name, phone_number, notes = sql.get_contact(contact_id)
+    full_name = f"{first_name} {last_name}".strip()
+
+    window = guizero.Window(app, title=full_name, layout="grid", width=280, height=200)
+
+    guizero.Box(window, height=20, width="fill", grid=[0, 0])
+    guizero.Box(window, height="fill", width=20, grid=[0, 0])
+    guizero.Box(window, height="fill", width=20, grid=[3, 0])
+
+    """
+    guizero.Text(window, text="First Name ", grid=[1, 1], align="right")
+    first_name = guizero.TextBox(window, grid=[2, 1], width=20)
+    guizero.Text(window, text="Last Name ", grid=[1, 2], align="right")
+    last_name = guizero.TextBox(window, grid=[2, 2], width=20)
+    guizero.Text(window, text="Phone Number ", grid=[1, 3], align="right")
+    phone_number = guizero.TextBox(window, grid=[2, 3], width=20)
+    guizero.Text(window, text="Notes ", grid=[1, 4], align="right")
+    notes = guizero.TextBox(window, grid=[2, 4], width=20)
+
+    def confirm():
+        sql.add_contact(first_name.value, last_name.value, phone_number.value,
+                        notes.value)
+        update_content_box()
+
+    options_box = guizero.Box(window, grid=[0, 5, 4, 1], layout="grid")
+    guizero.Box(options_box, height=20, width="fill", grid=[1, 0])
+    guizero.PushButton(options_box, width=5, text="Back", grid=[0, 1],
+                       command=window.destroy)
+    guizero.Box(options_box, height="fill", width=30, grid=[1, 1])
+    guizero.PushButton(options_box, width=5, text="Add", grid=[2, 1],
+                       command=confirm)"""
+
+def create_contact_button(master, contact) -> guizero.PushButton:
+    contact_id, first_name, last_name, *_ = contact
+    full_name = f"{first_name} {last_name}".strip()
+    contact_button = guizero.PushButton(master, text=full_name, width="fill",
+                                        command=display_contact, args=(contact_id,))
+    return contact_button
 
 def update_content_box():
     contacts = sql.get_contacts()
@@ -41,11 +81,10 @@ def update_content_box():
         guizero.Text(content_box, "No contacts to show.", height="fill")
         return
 
-    for i in range(len(contacts)):
-        contact = contacts[i]
-        contacts[i] = contact
+    contact_button_box = guizero.Box(content_box, width="fill")
 
-    guizero.ButtonGroup(content_box, contacts)
+    for i in range(len(contacts)):
+        create_contact_button(contact_button_box, contacts[i])
 
 def new_contact():
     window = guizero.Window(app, title="New Contact", layout="grid", width=280, height=200)
