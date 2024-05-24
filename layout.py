@@ -42,28 +42,29 @@ def display_contact(contact_id):
     guizero.Box(window, height="fill", width=20, grid=[0, 0])
     guizero.Box(window, height="fill", width=20, grid=[3, 0])
 
-    """
     guizero.Text(window, text="First Name ", grid=[1, 1], align="right")
-    first_name = guizero.TextBox(window, grid=[2, 1], width=20)
+    first_name = guizero.TextBox(window, text=first_name, grid=[2, 1], width=20, enabled=False)
     guizero.Text(window, text="Last Name ", grid=[1, 2], align="right")
-    last_name = guizero.TextBox(window, grid=[2, 2], width=20)
+    last_name = guizero.TextBox(window, text=last_name, grid=[2, 2], width=20, enabled=False)
     guizero.Text(window, text="Phone Number ", grid=[1, 3], align="right")
-    phone_number = guizero.TextBox(window, grid=[2, 3], width=20)
+    phone_number = guizero.TextBox(window, text=phone_number, grid=[2, 3], width=20, enabled=False)
     guizero.Text(window, text="Notes ", grid=[1, 4], align="right")
-    notes = guizero.TextBox(window, grid=[2, 4], width=20)
+    notes = guizero.TextBox(window, text=notes, grid=[2, 4], width=20, enabled=False)
 
-    def confirm():
-        sql.add_contact(first_name.value, last_name.value, phone_number.value,
-                        notes.value)
-        update_content_box()
+    def action():
+        action_status = action_button.text
+        if action_status == "Edit":
+            action_button.text = "Save"
+
+        else:
+            action_button.text = "Edit"
 
     options_box = guizero.Box(window, grid=[0, 5, 4, 1], layout="grid")
     guizero.Box(options_box, height=20, width="fill", grid=[1, 0])
     guizero.PushButton(options_box, width=5, text="Back", grid=[0, 1],
                        command=window.destroy)
     guizero.Box(options_box, height="fill", width=30, grid=[1, 1])
-    guizero.PushButton(options_box, width=5, text="Add", grid=[2, 1],
-                       command=confirm)"""
+    action_button = guizero.PushButton(options_box, width=5, text="Edit", grid=[2, 1], command=action)
 
 def create_contact_button(master, contact) -> guizero.PushButton:
     contact_id, first_name, last_name, *_ = contact
