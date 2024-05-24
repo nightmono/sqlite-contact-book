@@ -103,9 +103,20 @@ def new_contact():
     notes = guizero.TextBox(window, grid=[2, 4], width=20)
 
     def confirm():
+        if not first_name.value:
+            window.error("Missing First Name", "First name is missing")
+            return
+
         sql.add_contact(first_name.value, last_name.value, phone_number.value,
                         notes.value)
+
+        first_name.value = ""
+        last_name.value = ""
+        phone_number.value = ""
+        notes.value = ""
         update_content_box()
+
+        window.info("Contact Added", "Contact successfully added")
 
     options_box = guizero.Box(window, grid=[0, 5, 4, 1], layout="grid")
     guizero.Box(options_box, height=20, width="fill", grid=[1, 0])
