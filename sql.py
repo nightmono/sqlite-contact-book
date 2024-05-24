@@ -16,7 +16,7 @@ cursor.execute("""
 connection.commit()
 
 def get_contacts() -> tuple:
-    cursor.execute('SELECT * FROM contacts')
+    cursor.execute("SELECT * FROM contacts")
     contacts = cursor.fetchall()
     return contacts
 
@@ -27,3 +27,8 @@ def add_contact(first_name, last_name="", phone_number="", notes=""):
     """, (first_name, last_name, phone_number, notes))
 
     connection.commit()
+
+def get_contact(contact_id) -> tuple:
+    cursor.execute("SELECT * FROM contacts WHERE id = ?", (contact_id,))
+    contact = cursor.fetchone()
+    return contact
