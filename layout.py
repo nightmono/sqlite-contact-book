@@ -56,8 +56,18 @@ def display_contact(contact_id):
         if action_status == "Edit":
             action_button.text = "Save"
 
+            first_name.enable()
+            last_name.enable()
+            phone_number.enable()
+            notes.enable()
+
         else:
             action_button.text = "Edit"
+
+            first_name.disable()
+            last_name.disable()
+            phone_number.disable()
+            notes.disable()
 
     options_box = guizero.Box(window, grid=[0, 5, 4, 1], layout="grid")
     guizero.Box(options_box, height=20, width="fill", grid=[1, 0])
